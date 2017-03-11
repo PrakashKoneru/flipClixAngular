@@ -1,4 +1,3 @@
-// This is the sample data for this lesson
 var app = angular.module('flipclix', [
 	'ngResource',
 	'ui.router'
@@ -13,12 +12,8 @@ app.config(function($stateProvider,$urlRouterProvider){
 	$stateProvider
 	.state('topics',{
 		url : "/",
-		views : {
-			'main' : {
-				templateUrl : 'templates/topics.html',
-				controller : 'getTopicsController'
-			}
-		}
+		templateUrl : 'templates/topics.html',
+		controller : 'getTopicsController'
 	});
 })
 
@@ -27,26 +22,21 @@ app.factory('getTopicsFactory',function($resource){
 })
 
 app.controller('getTopicsController',function($scope,getTopicsService){
-	$scope.data = getTopicsService;
-	console.log($scope.data);
+	$scope.topics = getTopicsService.loadTopics();
+		console.log("Topics: ",$scope.topics);
+
 })
 
 app.service('getTopicsService',function(getTopicsFactory){
-	console.log(getTopicsFactory);
 	var self = {
 		loadTopics:function(){
+			var topics;
 			getTopicsFactory.get(function(data){
-				console.log(data);
+				 topics = data.data;
 			})
+			return topics;
 		}
 	}
 	self.loadTopics();
 	return self
 });
-
-
-
-
-
-
-
